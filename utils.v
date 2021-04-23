@@ -11,6 +11,10 @@ fn strip_tag(tag string, data string) string {
 		to_keep_end = data_strip.index("]]></![cdata[") or { panic("what's going on ?") }
 		data_strip = data_strip[to_keep_start..to_keep_end-1]
 	}
+	index_to_strip := data_strip.index("&nbsp") or { -1 }
+	if index_to_strip != -1 {
+		data_strip = data_strip[..index_to_strip] + " " + data_strip[index_to_strip+5..]
+	}
 	return data_strip
 }
 
