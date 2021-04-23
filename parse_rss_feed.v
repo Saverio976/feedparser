@@ -4,8 +4,9 @@ import net.html
 
 fn parse_rss_feed(document_dom html.DocumentObjectModel) Feed {
 	newfeed := Feed{
-		title: get_feed_title(document_dom)
-		link: get_feed_link(document_dom)
+		feed_dom: document_dom
+		title: get_feed_title(document_dom) // from parse_common_func.v
+		link: get_feed_link(document_dom) 	// from parse_common_func.v
 		description: get_feed_description_rss(document_dom)
 		entries: get_entries_rss(document_dom)
 	}
@@ -20,17 +21,15 @@ fn get_feed_description_rss(document_dom html.DocumentObjectModel) string {
 
 fn get_entries_rss(document_dom html.DocumentObjectModel) []Entry {
 	mut entries := []Entry{}
+	mut entry := Entry{}
 	for item in document_dom.get_tag("item") {
-		entries << Entry{
-			title: get_entrie_title(item)
-			link: get_entrie_link(item)
-			description: get_entrie_description_rss(item)
+		entry = Entry{
+			entry_dom: html.parse(item.str())
 		}
+		entry.title = entry.get_tag("title")
+		entry.link = entry.get_tag("link")
+		entry.description = entry.get_tag("description")
+		entries << entry
 	}
 	return entries
-}
-fn get_entrie_description_rss(entrie_tag html.Tag) string {
-	mut description := html.parse(entrie_tag.str()).get_tag("description")[0].str()
-	description = strip_tag("description", description)
-	return description
 }

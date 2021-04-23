@@ -4,8 +4,9 @@ import net.html
 
 fn parse_atom_feed(document_dom html.DocumentObjectModel) Feed {
 	newfeed := Feed{
-		title: get_feed_title(document_dom)
-		link: get_feed_link(document_dom)
+		feed_dom: document_dom
+		title: get_feed_title(document_dom)	// from parse_common_func.v
+		link: get_feed_link(document_dom)	// from parse_common_func.v
 		description: get_feed_description_atom(document_dom)
 		entries: get_entries_atom(document_dom)
 	}
@@ -20,23 +21,19 @@ fn get_feed_description_atom(document_dom html.DocumentObjectModel) string {
 
 fn get_entries_atom(document_dom html.DocumentObjectModel) []Entry {
 	mut entries := []Entry{}
+	mut entry := Entry{}
 	for item in document_dom.get_tag("entry") {
-		entries << Entry{
-			title: get_entrie_title(item)
-			link: get_entrie_link(item)
-			description: get_entrie_description_atom(item)
+		entry = Entry{
+			entry_dom: html.parse(item.str())
 		}
+		entry.title = entry.get_tag("title")
+		entry.link = entry.get_tag("link")
+		mut description := entry.get_tag("summary")
+		if description == "" {
+			description = entry.get_tag("content")
+		}
+		entry.description = description
+		entries << entry
 	}
 	return entries
-}
-fn get_entrie_description_atom(entrie_tag html.Tag) string {
-	mut tag := "summary"
-	mut tags_description := html.parse(entrie_tag.str()).get_tag(tag)
-	if tags_description.len == 0 {
-		tag = "content"
-		tags_description = html.parse(entrie_tag.str()).get_tag(tag)
-	}
-	mut description := tags_description[0].str()
-	description = strip_tag(tag, description)
-	return description
 }
