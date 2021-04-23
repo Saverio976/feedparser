@@ -30,6 +30,10 @@ pub:
 	description string
 }
 ```
+```v
+fn (entry Entry) get_tag(tag string) string
+// get a list of a tag and sanityze it for you. if tag not found return ""
+```
 * Feed
 ```v
 struct Feed {
