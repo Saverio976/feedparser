@@ -25,9 +25,13 @@ pub fn (mut entry Entry) get(tag string) string {
 		'guid' { entry.id }
 		'link' { entry.link }
 		'title' { entry.title }
-		else { entry.tag_search_history[this_tag] or { entry.search_tag(this_tag) } }
+		else { else_part(mut entry, this_tag) }
 	}
 	return data
+}
+
+fn else_part(mut entry Entry, tag string) string {
+	return entry.tag_search_history[tag] or { entry.search_tag(tag) }
 }
 
 fn (mut entry Entry) search_tag(tag string) string {
