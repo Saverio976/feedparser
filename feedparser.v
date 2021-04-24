@@ -6,7 +6,7 @@ import net.html
 // parse is the main entry function to parse feeds via remote url.
 // It check what type of feed it is (RSS or Atom) and return Feed struct.
 // If you alredy know what type feed is, see parse_rss or parse_atom instead
-pub fn parse(url string) ?Feed{
+pub fn parse(url string) ?Feed {
 	data := http.get_text(url)
 	doc := html.parse(data)
 	if is_rss_feed(doc) {
