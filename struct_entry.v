@@ -14,7 +14,8 @@ pub mut:
 	description string
 }
 
-// get a list of a tag and sanityze it for you. if tag not found return ""
+// get a tag in this entry.
+// this can be used to get description, title, link but also not default search one
 pub fn (mut entry Entry) get(tag string) string {
 	this_tag := tag.to_lower()
 	data := match this_tag {
