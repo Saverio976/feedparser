@@ -19,15 +19,25 @@ pub fn parse(url string) ?Feed {
 }
 
 // parse_rss parse RSS feed with the given url
-pub fn parse_rss(url string) Feed {
+pub fn parse_rss(url string) ?Feed {
 	data := http.get_text(url)
 	doc := html.parse(data)
-	return parse_rss_feed(doc)
+	if is_rss_feed(doc) {
+		return parse_rss_feed(doc)
+	} else {
+		return none
+	}
+	
 }
 
 // parse_atom parse Atom feed with the given url
-pub fn parse_atom(url string) Feed {
+pub fn parse_atom(url string) ?Feed {
 	data := http.get_text(url)
 	doc := html.parse(data)
-	return parse_atom_feed(doc)
+	if is_atom_feed(doc) {
+		return parse_atom_feed(doc)
+	} else {
+		return none
+	}
+	
 }
