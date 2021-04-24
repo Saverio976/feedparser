@@ -26,11 +26,12 @@ fn get_entries_atom(document_dom html.DocumentObjectModel) []Entry {
 		entry = Entry{
 			entry_dom: html.parse(item.str())
 		}
-		entry.title = entry.get_tag("title")
-		entry.link = entry.get_tag("link")
-		mut description := entry.get_tag("summary")
+		entry.title = entry.search_tag("title")
+		entry.link = entry.search_tag("link")
+		entry.id = entry.search_tag("id")
+		mut description := entry.search_tag("summary")
 		if description == "" {
-			description = entry.get_tag("content")
+			description = entry.search_tag("content")
 		}
 		entry.description = description
 		entries << entry

@@ -8,5 +8,6 @@ pub:
 	title string
 	link string
 	description string
+pub mut:
 	entries []Entry
 }

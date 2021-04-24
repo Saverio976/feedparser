@@ -26,9 +26,10 @@ fn get_entries_rss(document_dom html.DocumentObjectModel) []Entry {
 		entry = Entry{
 			entry_dom: html.parse(item.str())
 		}
-		entry.title = entry.get_tag("title")
-		entry.link = entry.get_tag("link")
-		entry.description = entry.get_tag("description")
+		entry.title = entry.search_tag("title")
+		entry.link = entry.search_tag("link")
+		entry.id = entry.search_tag("guid")
+		entry.description = entry.search_tag("description")
 		entries << entry
 	}
 	return entries
