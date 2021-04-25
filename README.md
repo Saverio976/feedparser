@@ -1,4 +1,4 @@
-# module feedparser
+# v feedparser
 
 v module to parse RSS and Atom feed
 
@@ -15,7 +15,10 @@ next, there are 2 possibilities :
 
 - where are the other module installed create the folder `saverio` and put the downloaded folder in
 
-- in your code : `import saverio.feedparser`
+- in your code : `import saverio.feedparser`Generating markdown in "./feedparser/feedparser.md"
+
+
+# module feedparser
 
 ## Contents
 - [parse](#parse)
@@ -92,4 +95,4 @@ pub mut:
 
 [[Return to contents]](#Contents)
 
-#### Powered by vdoc. Generated on: 25 Apr 2021 05:11:12
+#### Powered by vdoc. Generated on: 25 Apr 2021 20:55:06
