@@ -9,12 +9,16 @@ fn strip_tag(tag string, data string) string {
 
 	if data_strip.len >= 9 && data_strip[0..9].to_upper() == '<![CDATA[' {
 		to_keep_start = 9
-		to_keep_end = data_strip.index(']]></![cdata[') or { panic("what's going on ?") }
+		to_keep_end = data_strip.index(']]></![cdata[') or { return error('this should not happen !') }
 		data_strip = data_strip[to_keep_start..to_keep_end - 1]
 	}
-	index_to_strip := data_strip.index('&nbsp') or { -1 }
-	if index_to_strip != -1 {
-		data_strip = data_strip[..index_to_strip] + ' ' + data_strip[index_to_strip + 5..]
+	replacement := map{
+		'&nbsp;': ' '
+		'&gt;': '>'
+		'&lt;': '<'
+	}
+	for key, value in replacement {
+		data_strip = data_strip.replace(key, value)
 	}
 	return data_strip
 }
