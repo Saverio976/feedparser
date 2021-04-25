@@ -7,17 +7,15 @@ download this repo (with git (https://github.com/Saverio976/feedparser.v.git) or
 next, there are 2 possibilities :
 1) enable the module only for your project :
 
-`	`put the downloaded folder in your project folder
+- put the downloaded folder in your project folder
 
-`	`in your code : `import feedparser`
+- in your code : `import feedparser`
 
 2) enable the module globaly :
 
-`	`where are the other module installed
+- where are the other module installed create the folder `saverio` and put the downloaded folder in
 
-`	` `	`create the folder `saverio` and put the downloaded folder in
-
-`	`in your code : `import saverio.feedparser`
+- in your code : `import saverio.feedparser`
 
 ## Contents
 - [parse](#parse)
