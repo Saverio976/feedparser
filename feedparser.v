@@ -20,7 +20,7 @@ pub fn parse(url string) ?Feed {
 	} else if is_atom_feed(doc) {
 		return parse_atom_feed(doc)
 	} else {
-		return error(err_parse)
+		return error(feedparser.err_parse)
 	}
 }
 
@@ -30,7 +30,7 @@ pub fn parse_rss(url string) ?Feed {
 	if is_rss_feed(doc) {
 		return parse_rss_feed(doc)
 	} else {
-		return error(err_parse_rss)
+		return error(feedparser.err_parse_rss)
 	}
 }
 
@@ -40,7 +40,7 @@ pub fn parse_atom(url string) ?Feed {
 	if is_atom_feed(doc) {
 		return parse_atom_feed(doc)
 	} else {
-		return error(err_parse_atom)
+		return error(feedparser.err_parse_atom)
 	}
 }
 
@@ -49,6 +49,6 @@ fn get_document_dom(url string) ?html.DocumentObjectModel {
 	if data.len > 0 {
 		return html.parse(data)
 	} else {
-		return error(err_acces_url)
+		return error(feedparser.err_acces_url)
 	}
 }

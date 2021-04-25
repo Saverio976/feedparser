@@ -9,6 +9,7 @@ fn parse_atom_feed(document_dom html.DocumentObjectModel) Feed {
 		link: get_feed_link(document_dom) // from parse_common_func.v
 		description: get_feed_description_atom(document_dom)
 		entries: get_entries_atom(document_dom)
+		feed_type: 'atom'
 	}
 	return newfeed
 }

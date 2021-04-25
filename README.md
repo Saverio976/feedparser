@@ -1,54 +1,78 @@
-# V feedparser
+# module feedparser
 
-## func
+## Contents
+- [parse](#parse)
+- [parse_atom](#parse_atom)
+- [parse_rss](#parse_rss)
+- [Entry](#Entry)
+  - [get](#get)
+- [Feed](#Feed)
 
-* parse
+## parse
 ```rust
 fn parse(url string) ?Feed
-// parse is the main entry function to parse feeds via remote url
-// check what type of feed it is (RSS or Atom) and return Feed struct
-// if you know already what type feed is, see parse_rss or parse_atom instead
 ```
-* parse_atom
-```rust
-fn parse_atom(url string) Feed
-// parse_atom parse Atom feed with the given url
-```
-* parse_rss
-```rust
-fn parse_rss(url string) Feed
-// parse_rss parse RSS feed with the given url
-```
+ parse is the main entry function to parse feeds via remote url.  It check what type of feed it is (RSS or Atom) and return Feed struct.  If you alredy know what type feed is, see parse_rss or parse_atom instead 
 
-## struct
-* Entry
+[[Return to contents]](#Contents)
+
+## parse_atom
+```rust
+fn parse_atom(url string) ?Feed
+```
+ parse_atom parse Atom feed with the given url 
+
+[[Return to contents]](#Contents)
+
+## parse_rss
+```rust
+fn parse_rss(url string) ?Feed
+```
+ parse_rss parse RSS feed with the given url 
+
+[[Return to contents]](#Contents)
+
+## Entry
 ```rust
 struct Entry {
 mut:
-        tag_search_history map[string]string
+	tag_search_history map[string]string
 pub:
-        entry_dom html.DocumentObjectModel
+	entry_dom html.DocumentObjectModel
 pub mut:
-        title       string
-        link        string
-        id          string
-        description string
+	title       string
+	link        string
+	id          string
+	description string
 }
 ```
+
+
+[[Return to contents]](#Contents)
+
+## get
 ```rust
 fn (mut entry Entry) get(tag string) string
-// get a tag in this entry.
-// this can be used to get description, title, link but also not default search one
 ```
-* Feed
+ get a tag in this entry.  this can be used to get description, title, link but also not default search one 
+
+[[Return to contents]](#Contents)
+
+## Feed
 ```rust
 struct Feed {
+	feed_dom html.DocumentObjectModel
 pub:
-        feed_dom    html.DocumentObjectModel
-        title       string
-        link        string
-        description string
+	title       string
+	link        string
+	description string
+	feed_type   string
 pub mut:
-        entries []Entry
+	entries []Entry
 }
 ```
+
+
+[[Return to contents]](#Contents)
+
+#### Powered by vdoc. Generated on: 25 Apr 2021 05:11:12
