@@ -2,24 +2,36 @@ module feedparser
 
 import net.html
 
-fn strip_tag(tag string, data string) string {
+const xml_replacement = map{
+	'&nbsp;': ' '
+	'&#160;': ' '
+	'&gt;':   '>'
+	'&#60':   '>'
+	'&lt;':   '<'
+	'&#62;':  '<'
+	'&amp':   '&'
+	'&#38':   '&'
+}
+
+fn strip_tag(tag string, data string, feed_type string) string {
+	if tag == 'link' && feed_type == 'atom' {
+		to_keep_start := 6 + data.index('href="') or { -6 }
+		link := data[to_keep_start..]
+		to_keep_end := link.index('"') or { link.len }
+		return link[..to_keep_end]
+	}
 	mut to_keep_start := 1 + data.index('>') or { tag.len + 1 }
-	mut to_keep_end := data.len - tag.len - 2 - 1
+	mut to_keep_end := data.len - (tag.len + 2) - 1
 	mut data_strip := data[to_keep_start..to_keep_end]
 
 	if data_strip.len >= 9 && data_strip[0..9].to_upper() == '<![CDATA[' {
 		to_keep_start = 9
-		to_keep_end = data_strip.index(']]></![cdata[') or {
-			return error('this should not happen !')
+		to_keep_end = -1 + data_strip.index(']]></![cdata[') or {
+			panic('this should not happen !')
 		}
-		data_strip = data_strip[to_keep_start..to_keep_end - 1]
+		data_strip = data_strip[to_keep_start..to_keep_end]
 	}
-	replacement := map{
-		'&nbsp;': ' '
-		'&gt;':   '>'
-		'&lt;':   '<'
-	}
-	for key, value in replacement {
+	for key, value in feedparser.xml_replacement {
 		data_strip = data_strip.replace(key, value)
 	}
 	return data_strip
