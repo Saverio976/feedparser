@@ -5,7 +5,7 @@
 
 // if you installed the module globaly :
 // uncomment the next line
-// import saverio.feedparser
+import saverio.feedparser
 
 fn main() {
 	url := 'https://rss.nytimes.com/services/xml/rss/nyt/World.xml'
@@ -13,7 +13,7 @@ fn main() {
 
 	println('Feed\'s title : $newsfeed.title')
 	println('Feed\'s link : $newsfeed.link')
-	println('Feed\'s description : $newsfeed.description')
+	println('Feed\'s description : $newsfeed.description') // this will print an empty string with the default url set (the feed dont give a description)
 
 	// print only 3 results to not spam the terminal :)
 	for entry in newsfeed.entries[..2] {
