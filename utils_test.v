@@ -1,8 +1,10 @@
 module feedparser
 
 fn test_strip_tag() {
-	data := '<title> this is A title</title>'
-	assert strip_tag('title', data) == ' this is A title'
+	mut data := '<title> this is A title</title>'
+	assert strip_tag('title', data, 'rss') == ' this is A title'
+	data = '<link href="https://somelink.xd">'
+	assert strip_tag('link', data, 'atom') == 'https://somelink.xd'
 }
 
 fn test_is_rss_feed() {
