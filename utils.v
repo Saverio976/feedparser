@@ -1,8 +1,7 @@
 module feedparser
 
 import net.html
-
-import xmlreplacement
+import saverio.feedparser.xmlreplacement
 
 fn strip_tag(tag string, data string, feed_type string) string {
 	if tag == 'link' && feed_type == 'atom' {
