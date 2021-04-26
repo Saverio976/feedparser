@@ -2,16 +2,7 @@ module feedparser
 
 import net.html
 
-const xml_replacement = map{
-	'&nbsp;': ' '
-	'&#160;': ' '
-	'&gt;':   '>'
-	'&#60':   '>'
-	'&lt;':   '<'
-	'&#62;':  '<'
-	'&amp':   '&'
-	'&#38':   '&'
-}
+import xmlreplacement
 
 fn strip_tag(tag string, data string, feed_type string) string {
 	if tag == 'link' && feed_type == 'atom' {
@@ -31,7 +22,7 @@ fn strip_tag(tag string, data string, feed_type string) string {
 		}
 		data_strip = data_strip[to_keep_start..to_keep_end]
 	}
-	for key, value in feedparser.xml_replacement {
+	for key, value in xmlreplacement.xml_replacement {
 		data_strip = data_strip.replace(key, value)
 	}
 	return data_strip
