@@ -5,7 +5,7 @@
 
 // if you installed the module globaly :
 // uncomment the next line
-import saverio.feedparser
+// import saverio.feedparser
 
 fn main() {
 	url := 'https://rss.nytimes.com/services/xml/rss/nyt/World.xml'
