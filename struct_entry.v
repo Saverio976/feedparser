@@ -3,15 +3,55 @@ module feedparser
 import net.html
 
 pub struct Entry {
+	feed_type string
+	entry_dom html.DocumentObjectModel
 mut:
 	tag_search_history map[string]string
-pub:
-	entry_dom html.DocumentObjectModel
 pub mut:
 	title       string
 	link        string
 	id          string
 	description string
+}
+
+fn (mut entry Entry) initialize_struct() ?bool {
+	entry.init_title() or { return err }
+	entry.init_link() or { return err }
+	entry.init_description()
+	return true
+}
+
+fn (mut entry Entry) init_title() ?bool {
+	list_titles := entry.entry_dom.get_tag('title')
+	if list_titles.len == 0 {
+		return error('Atom/RSS entry/item must have a declared title')
+	}
+	entry.title = strip_tag('title', list_titles[0].str(), entry.feed_type)
+	return true
+}
+
+fn (mut entry Entry) init_link() ?bool {
+	tag := if entry.feed_type == 'rss' { 'link' } else { 'id' }
+	list_links := entry.entry_dom.get_tag(tag)
+	if list_links.len == 0 {
+		return error('Atom/RSS entry/item must have a declareted id/link')
+	}
+	entry.link = strip_tag(tag, list_links[0].str(), entry.feed_type)
+	return true
+}
+
+fn (mut entry Entry) init_description() {
+	mut tag := if entry.feed_type == 'rss' { 'description' } else { 'summary' }
+	mut list_descriptions := entry.entry_dom.get_tag(tag)
+	if entry.feed_type == 'atom' && list_descriptions.len == 0 {
+		tag = 'content'
+		list_descriptions = entry.entry_dom.get_tag(tag)
+	}
+	if list_descriptions.len == 0 {
+		entry.description = ''
+	} else {
+		entry.description = strip_tag(tag, list_descriptions[0].str(), entry.feed_type)
+	}
 }
 
 // get a tag in this entry.
@@ -26,21 +66,24 @@ pub fn (mut entry Entry) get(tag string) string {
 		'guid' { entry.id }
 		'link' { entry.link }
 		'title' { entry.title }
-		else { else_part(mut entry, this_tag) }
+		else { else_part(mut entry, this_tag) } // call a func because
+		// if i replace these
+		// "entry.tag_search_history[tag] or { entry.search_tag(tag) }"
+		// it throw an error
+		// issue : https://github.com/vlang/v/issues/9866
 	}
 	return data
 }
 
 fn else_part(mut entry Entry, tag string) string {
-	return entry.tag_search_history[tag] or { entry.search_tag(tag) }
-}
-
-fn (mut entry Entry) search_tag(tag string) string {
+	if tag in entry.tag_search_history {
+		return entry.tag_search_history[tag]
+	}
 	data := entry.entry_dom.get_tag(tag)
 	if data.len == 0 {
 		entry.tag_search_history[tag] = ''
 	} else {
-		entry.tag_search_history[tag] = strip_tag(tag, data[0].str())
+		entry.tag_search_history[tag] = strip_tag(tag, data[0].str(), entry.feed_type)
 	}
 	return entry.tag_search_history[tag]
 }
