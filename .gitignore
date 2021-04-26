@@ -6,5 +6,5 @@ feedparser
 *.so
 *.dylib
 *.dll
-#generate xmlreplacement with python
+# generate xmlreplacement with python
 gen_xmlv.py
