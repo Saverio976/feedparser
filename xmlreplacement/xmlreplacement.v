@@ -3639,6 +3639,7 @@ pub const xml_replacement = map{
 	'&#8204;':                           '‌'
 }
 
+// htmlentity_to_string convert a html entity to its rune
 pub fn htmlentity_to_string(data string) string {
 	mut data_trasnform := data
 	if data.contains('&') {
@@ -3646,5 +3647,5 @@ pub fn htmlentity_to_string(data string) string {
 			data_trasnform = data_trasnform.replace(key, value)
 		}
 	}
-	return data_trasnform
+	return data_transform
 }
