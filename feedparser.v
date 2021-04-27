@@ -1,6 +1,5 @@
 module feedparser
 
-import net.http
 import net.html
 
 const (
@@ -10,9 +9,9 @@ const (
 	err_parse      = 'Document providen is not a valid type'
 )
 
-// parse is the main entry function to parse feeds via remote url.
-// It check what type of feed it is (RSS or Atom) and return Feed struct.
-// If you alredy know what type feed is, see parse_rss or parse_atom instead
+// parse is the main entry function to parse feeds via the given url.
+// parse check what type of feed it is (between RSS and Atom)
+// and return Feed struct.
 pub fn parse(url string) ?Feed {
 	doc := get_document_dom(url) or { return err }
 	if is_rss_feed(doc) {
@@ -44,11 +43,20 @@ pub fn parse_atom(url string) ?Feed {
 	}
 }
 
-fn get_document_dom(url string) ?html.DocumentObjectModel {
-	data := http.get_text(url)
-	if data.len > 0 {
-		return html.parse(data)
-	} else {
-		return error(feedparser.err_acces_url)
+fn parse_rss_feed(document_dom html.DocumentObjectModel) ?Feed {
+	mut newfeed := Feed{
+		feed_dom: document_dom
+		feed_type: 'rss'
 	}
+	newfeed.initialize_struct() or { return err }
+	return newfeed
+}
+
+fn parse_atom_feed(document_dom html.DocumentObjectModel) ?Feed {
+	mut newfeed := Feed{
+		feed_dom: document_dom
+		feed_type: 'atom'
+	}
+	newfeed.initialize_struct() or { return err }
+	return newfeed
 }

@@ -14,6 +14,37 @@ pub mut:
 	description string
 }
 
+// get a tag in this entry.
+// get can be used to get the description, the title, the link
+// but also all tag that is not set by default (pubDate, ..)
+pub fn (mut entry Entry) get(tag string) string {
+	this_tag := tag.to_lower()
+	data := match this_tag {
+		'description' { entry.description }
+		'summary' { entry.description }
+		'content' { entry.description }
+		'id' { entry.id }
+		'guid' { entry.id }
+		'link' { entry.link }
+		'title' { entry.title }
+		else { else_part(mut entry, this_tag) }
+	}
+	return data
+}
+
+fn else_part(mut entry Entry, tag string) string {
+	if tag in entry.tag_search_history {
+		return entry.tag_search_history[tag]
+	}
+	data := entry.entry_dom.get_tag(tag)
+	if data.len == 0 {
+		entry.tag_search_history[tag] = ''
+	} else {
+		entry.tag_search_history[tag] = strip_tag(tag, data[0].str(), entry.feed_type)
+	}
+	return entry.tag_search_history[tag]
+}
+
 fn (mut entry Entry) initialize_struct() ?bool {
 	entry.init_title() or { return err }
 	entry.init_link() or { return err }
@@ -52,38 +83,4 @@ fn (mut entry Entry) init_description() {
 	} else {
 		entry.description = strip_tag(tag, list_descriptions[0].str(), entry.feed_type)
 	}
-}
-
-// get a tag in this entry.
-// this can be used to get description, title, link but also not default search one
-pub fn (mut entry Entry) get(tag string) string {
-	this_tag := tag.to_lower()
-	data := match this_tag {
-		'description' { entry.description }
-		'summary' { entry.description }
-		'content' { entry.description }
-		'id' { entry.id }
-		'guid' { entry.id }
-		'link' { entry.link }
-		'title' { entry.title }
-		else { else_part(mut entry, this_tag) } // call a func because
-		// if i replace these
-		// "entry.tag_search_history[tag] or { entry.search_tag(tag) }"
-		// it throw an error
-		// issue : https://github.com/vlang/v/issues/9866
-	}
-	return data
-}
-
-fn else_part(mut entry Entry, tag string) string {
-	if tag in entry.tag_search_history {
-		return entry.tag_search_history[tag]
-	}
-	data := entry.entry_dom.get_tag(tag)
-	if data.len == 0 {
-		entry.tag_search_history[tag] = ''
-	} else {
-		entry.tag_search_history[tag] = strip_tag(tag, data[0].str(), entry.feed_type)
-	}
-	return entry.tag_search_history[tag]
 }
