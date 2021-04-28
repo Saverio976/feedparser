@@ -19,9 +19,9 @@ fn strip_tag(tag string, data string, feed_type string) string {
 	mut end := data.len - (tag.len + 2) - 1
 	data_strip = data[start..end]
 
-	if data_strip.len >= 9 && data_strip[0..9].to_lower() == '<![CDATA[' {
+	if data_strip.starts_with('<![CDATA[') || data_strip.starts_with('<![cdata[') {
 		start = 9
-		end = -1 + data_strip.index(']]></![cdata[') or { panic('this should not happen !') }
+		end = data_strip.index(']]></![cdata[') or { panic('this should not happen !') }
 		data_strip = data_strip[start..end]
 	}
 
