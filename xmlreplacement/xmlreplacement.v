@@ -3641,10 +3641,10 @@ pub const xml_replacement = map{
 
 // htmlentity_to_string convert a html entity to its rune
 pub fn htmlentity_to_string(data string) string {
-	mut data_trasnform := data
+	mut data_transform := data
 	if data.contains('&') {
 		for key, value in xmlreplacement.xml_replacement {
-			data_trasnform = data_trasnform.replace(key, value)
+			data_transform = data_transform.replace(key, value)
 		}
 	}
 	return data_transform
