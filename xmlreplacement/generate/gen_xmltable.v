@@ -11,7 +11,7 @@ const (
 	func = [
 		'}',
 		'',
-		'// htmlentity_to_string convert a html entity to its rune'
+		'// htmlentity_to_string convert a html entity to its rune',
 		'pub fn htmlentity_to_string(data string) string {',
 		'	mut data_trasnform := data',
 		"	if data.contains('&') {",
