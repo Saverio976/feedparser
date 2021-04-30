@@ -9,15 +9,15 @@ fn strip_tag(tag string, data string, feed_type string) string {
 	data_strip = xmlreplacement.htmlentity_to_string(data_strip)
 
 	if tag == 'link' && feed_type == 'atom' {
-		to_keep_start := 6 + data.index('href="') or { -6 }
-		link := data[to_keep_start..]
+		to_keep_start := 6 + data_strip.index('href="') or { -6 }
+		link := data_strip[to_keep_start..]
 		to_keep_end := link.index('"') or { link.len }
 		return link[..to_keep_end]
 	}
 
-	mut start := 1 + data.index('>') or { tag.len + 1 }
-	mut end := data.len - (tag.len + 2) - 1
-	data_strip = data[start..end]
+	mut start := 1 + data_strip.index('>') or { tag.len + 1 }
+	mut end := data_strip.len - (tag.len + 2) - 1
+	data_strip = data_strip[start..end]
 
 	if data_strip.starts_with('<![CDATA[') || data_strip.starts_with('<![cdata[') {
 		start = 9
