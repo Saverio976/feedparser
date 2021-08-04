@@ -3,6 +3,7 @@ module feedparser
 import net.html
 
 pub struct Entry {
+pub:
 	feed_type string
 	entry_dom html.DocumentObjectModel
 mut:
