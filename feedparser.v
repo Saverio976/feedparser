@@ -19,7 +19,7 @@ pub fn parse(url string) ?Feed {
 	} else if is_atom_feed(doc) {
 		return parse_atom_feed(doc) or { return err }
 	} else {
-		return error(feedparser.err_parse)
+		return error(.err_parse)
 	}
 }
 
@@ -29,7 +29,7 @@ pub fn parse_rss(url string) ?Feed {
 	if is_rss_feed(doc) {
 		return parse_rss_feed(doc) or { return err }
 	} else {
-		return error(feedparser.err_parse_rss)
+		return error(.err_parse_rss)
 	}
 }
 
@@ -39,7 +39,7 @@ pub fn parse_atom(url string) ?Feed {
 	if is_atom_feed(doc) {
 		return parse_atom_feed(doc) or { return err }
 	} else {
-		return error(feedparser.err_parse_atom)
+		return error(.err_parse_atom)
 	}
 }
 
