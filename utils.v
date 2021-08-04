@@ -2,7 +2,7 @@ module feedparser
 
 import net.html
 import net.http
-import saverio.feedparser.xmlreplacement
+import xmlreplacement
 
 fn strip_tag(tag string, data string, feed_type string) string {
 	mut data_strip := data
