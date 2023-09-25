@@ -1,6 +1,6 @@
 module xmlreplacement
 
-pub const xml_replacement = map{
+pub const xml_replacement = {
 	'&#198;':                            'Æ'
 	'&AElig;':                           'Æ'
 	'&#38;':                             '&'
