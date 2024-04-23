@@ -37,7 +37,7 @@ fn else_part(mut entry Entry, tag string) string {
 	if tag in entry.tag_search_history {
 		return entry.tag_search_history[tag]
 	}
-	data := entry.entry_dom.get_tag(tag)
+	data := entry.entry_dom.get_tags(name: tag)
 	if data.len == 0 {
 		entry.tag_search_history[tag] = ''
 	} else {
@@ -54,7 +54,7 @@ fn (mut entry Entry) initialize_struct() !bool {
 }
 
 fn (mut entry Entry) init_title() !bool {
-	list_titles := entry.entry_dom.get_tag('title')
+	list_titles := entry.entry_dom.get_tags(name: 'title')
 	if list_titles.len == 0 {
 		return error('Atom/RSS entry/item must have a declared title')
 	}
@@ -64,7 +64,7 @@ fn (mut entry Entry) init_title() !bool {
 
 fn (mut entry Entry) init_link() !bool {
 	tag := if entry.feed_type == 'rss' { 'link' } else { 'id' }
-	list_links := entry.entry_dom.get_tag(tag)
+	list_links := entry.entry_dom.get_tags(name: tag)
 	if list_links.len == 0 {
 		return error('Atom/RSS entry/item must have a declareted id/link')
 	}
@@ -74,10 +74,10 @@ fn (mut entry Entry) init_link() !bool {
 
 fn (mut entry Entry) init_description() {
 	mut tag := if entry.feed_type == 'rss' { 'description' } else { 'summary' }
-	mut list_descriptions := entry.entry_dom.get_tag(tag)
+	mut list_descriptions := entry.entry_dom.get_tags(name: tag)
 	if entry.feed_type == 'atom' && list_descriptions.len == 0 {
 		tag = 'content'
-		list_descriptions = entry.entry_dom.get_tag(tag)
+		list_descriptions = entry.entry_dom.get_tags(name: tag)
 	}
 	if list_descriptions.len == 0 {
 		entry.description = ''

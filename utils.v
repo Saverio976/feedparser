@@ -38,9 +38,9 @@ fn get_document_dom(url string) !html.DocumentObjectModel {
 }
 
 fn is_rss_feed(document_dom html.DocumentObjectModel) bool {
-	return document_dom.get_tag('item').len > 0
+	return document_dom.get_tags(name: 'item').len > 0
 }
 
 fn is_atom_feed(document_dom html.DocumentObjectModel) bool {
-	return document_dom.get_tag('entry').len > 0
+	return document_dom.get_tags(name: 'entry').len > 0
 }

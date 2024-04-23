@@ -22,7 +22,7 @@ fn (mut feed Feed) initialize_struct() !bool {
 }
 
 fn (mut feed Feed) init_title() !bool {
-	list_titles := feed.feed_dom.get_tag('title')
+	list_titles := feed.feed_dom.get_tags(name: 'title')
 	if list_titles.len == 0 {
 		return error('Atom/RSS feeds must have a declareted title')
 	}
@@ -32,7 +32,7 @@ fn (mut feed Feed) init_title() !bool {
 
 fn (mut feed Feed) init_link() !bool {
 	tag := if feed.feed_type == 'rss' { 'link' } else { 'id' }
-	list_links := feed.feed_dom.get_tag(tag)
+	list_links := feed.feed_dom.get_tags(name: tag)
 	if list_links.len == 0 {
 		return error('Atom/RSS feeds must have a declareted id/link')
 	}
@@ -42,7 +42,7 @@ fn (mut feed Feed) init_link() !bool {
 
 fn (mut feed Feed) init_description() {
 	tag := if feed.feed_type == 'rss' { 'description' } else { 'subtitle' }
-	list_descriptions := feed.feed_dom.get_tag(tag)
+	list_descriptions := feed.feed_dom.get_tags(name: tag)
 	if list_descriptions.len == 0 {
 		feed.description = ''
 	} else {
@@ -54,7 +54,7 @@ fn (mut feed Feed) init_entries() !bool {
 	mut entries := []Entry{}
 	tag := if feed.feed_type == 'rss' { 'item' } else { 'entry' }
 	mut entry := Entry{}
-	for item in feed.feed_dom.get_tag(tag) {
+	for item in feed.feed_dom.get_tags(name: tag) {
 		entry = Entry{
 			entry_dom: html.parse(item.str())
 			feed_type: feed.feed_type
