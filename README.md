@@ -3,20 +3,33 @@
 v module to parse RSS and Atom feed
 
 ## Install
-download this repo (with git (https://github.com/Saverio976/feedparser.v.git) or with .zip)
-next, there are 2 possibilities :
-1) enable the module only for your project :
 
-- put the downloaded folder in your project folder
+```
+v install Saverio976.feedparser
+```
 
-- in your code : `import feedparser`
+## Usage
 
-2) enable the module globaly :
+```v
+import saverio976.feedparser
 
-- where are the other module installed create the folder `saverio` and put the downloaded folder in
+fn main() {
+	url := 'https://rss.nytimes.com/services/xml/rss/nyt/World.xml'
+	mut newsfeed := feedparser.parse(url) or { panic(err.str()) }
 
-- in your code : `import saverio.feedparser`Generating markdown in "./feedparser/feedparser.md"
+	println('Feed\'s title : ${newsfeed.title}')
+	println('Feed\'s link : ${newsfeed.link}')
+	println('Feed\'s description : ${newsfeed.description}')
 
+	// print only 3 results to not spam the terminal :)
+	for entry in newsfeed.entries[..2] {
+		println('\nEntry\'s Title : ${entry.title}')
+		println('Entry\'s Link : ${entry.link}')
+		println('Entry\'s Id : ${entry.id}')
+		println('Entry\'s description : ${entry.description}')
+	}
+}
+```
 
 # module feedparser
 
