@@ -11,11 +11,11 @@ fn main() {
 	url := 'https://rss.nytimes.com/services/xml/rss/nyt/World.xml'
 	mut newsfeed := feedparser.parse(url) or { panic(err.str()) }
 
-	println('Feed\'s title : $newsfeed.title')
+	println('Feed\'s title : ${newsfeed.title}')
 
 	// print only 3 results to not spam the terminal :)
 	for mut entry in newsfeed.entries[..2] {
-		println('\nEntry\'s Title : $entry.title')
+		println('\nEntry\'s Title : ${entry.title}')
 		// get a tag that is not search by default
 		println('Entry\'s pubDate : ${entry.get('pubDate')}') // the returned value will always be a string
 		// but get can work also for all default search

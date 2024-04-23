@@ -46,14 +46,14 @@ fn else_part(mut entry Entry, tag string) string {
 	return entry.tag_search_history[tag]
 }
 
-fn (mut entry Entry) initialize_struct() ?bool {
+fn (mut entry Entry) initialize_struct() !bool {
 	entry.init_title() or { return err }
 	entry.init_link() or { return err }
 	entry.init_description()
 	return true
 }
 
-fn (mut entry Entry) init_title() ?bool {
+fn (mut entry Entry) init_title() !bool {
 	list_titles := entry.entry_dom.get_tag('title')
 	if list_titles.len == 0 {
 		return error('Atom/RSS entry/item must have a declared title')
@@ -62,7 +62,7 @@ fn (mut entry Entry) init_title() ?bool {
 	return true
 }
 
-fn (mut entry Entry) init_link() ?bool {
+fn (mut entry Entry) init_link() !bool {
 	tag := if entry.feed_type == 'rss' { 'link' } else { 'id' }
 	list_links := entry.entry_dom.get_tag(tag)
 	if list_links.len == 0 {

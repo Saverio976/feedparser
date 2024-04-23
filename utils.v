@@ -28,7 +28,7 @@ fn strip_tag(tag string, data string, feed_type string) string {
 	return data_strip
 }
 
-fn get_document_dom(url string) ?html.DocumentObjectModel {
+fn get_document_dom(url string) !html.DocumentObjectModel {
 	data := http.get_text(url)
 	if data.len > 0 {
 		return html.parse(data)

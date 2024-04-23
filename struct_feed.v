@@ -13,7 +13,7 @@ pub mut:
 	entries     []Entry
 }
 
-fn (mut feed Feed) initialize_struct() ?bool {
+fn (mut feed Feed) initialize_struct() !bool {
 	feed.init_title() or { return err }
 	feed.init_link() or { return err }
 	feed.init_description()
@@ -21,7 +21,7 @@ fn (mut feed Feed) initialize_struct() ?bool {
 	return true
 }
 
-fn (mut feed Feed) init_title() ?bool {
+fn (mut feed Feed) init_title() !bool {
 	list_titles := feed.feed_dom.get_tag('title')
 	if list_titles.len == 0 {
 		return error('Atom/RSS feeds must have a declareted title')
@@ -30,7 +30,7 @@ fn (mut feed Feed) init_title() ?bool {
 	return true
 }
 
-fn (mut feed Feed) init_link() ?bool {
+fn (mut feed Feed) init_link() !bool {
 	tag := if feed.feed_type == 'rss' { 'link' } else { 'id' }
 	list_links := feed.feed_dom.get_tag(tag)
 	if list_links.len == 0 {
@@ -50,7 +50,7 @@ fn (mut feed Feed) init_description() {
 	}
 }
 
-fn (mut feed Feed) init_entries() ?bool {
+fn (mut feed Feed) init_entries() !bool {
 	mut entries := []Entry{}
 	tag := if feed.feed_type == 'rss' { 'item' } else { 'entry' }
 	mut entry := Entry{}
